@@ -22,6 +22,12 @@
 // no matter where we actually lift from.
 process.chdir(__dirname);
 
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var request = require('request');
+var needle = require('needle');
+
 // Ensure a "sails" can be located:
 (function () {
     var sails;
@@ -40,7 +46,8 @@ process.chdir(__dirname);
     // Try to get `rc` dependency
     var rc;
     try {
-        rc = require('rc');git
+        rc = require('rc');
+        git
     } catch (e0) {
         try {
             rc = require('sails/node_modules/rc');
@@ -58,4 +65,51 @@ process.chdir(__dirname);
 
     // Start server
     sails.lift(rc('sails'));
+
+
+    var PORT_NO = 8006;
+    server.listen(PORT_NO);
+
+    console.log('Starting socket on port: ' + PORT_NO);
+
+    io.on('connection', function (socket) {
+
+        socket.on('register_mobile', function (data) {
+            registerMobile(socket, data);
+        });
+
+        socket.on('send_new_message', function (data) {
+            sendNewMessage(socket, data);
+        });
+
+    });
 })();
+
+
+function registerMobile(socket, data) {
+    console.log(data);
+    var userId = data.userId;
+    console.log(socket.id)
+    var url = 'http://localhost:1337/updateSocketId/' + userId + '?socketId=' + encodeURIComponent(socket.id);
+    console.log(url)
+    request(url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log(body)
+        }
+    });
+}
+
+function sendNewMessage(socket, data) {
+
+    console.log(data.body);
+    console.log(data);
+    var url = 'http://localhost:1337/message?message=' + encodeURIComponent(data.message) + '&sender=' + data.sender + '&userPic=' + data.userPic + '&chat=' + data.chat;
+
+    console.log(url);
+    request(url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log(body)
+            io.to(body.socketId).emit('new_message', data);
+        }
+    });
+}
