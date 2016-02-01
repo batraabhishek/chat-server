@@ -37,7 +37,8 @@ module.exports.routes = {
     },
     'get /updateSocketId/:user' : 'MainController.updateSocketId',
     'get /message' : 'MainController.addMessage',
-    'post /login' :'MainController.userLogin'
+    'post /login' :'MainController.userLogin',
+    'get /chats' : 'MainController.findUserChats'
 
     /***************************************************************************
      *                                                                          *

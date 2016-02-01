@@ -12,9 +12,6 @@ module.exports = {
         var chatId = req.param('chatId');
 
         Chat.findById(chatId).exec(function (error, data) {
-            console.log(error);
-            console.log(data);
-
             return res.json(data);
         });
 
@@ -24,16 +21,11 @@ module.exports = {
 
         var userId = req.param('user');
         var socketId = req.param('socketId');
-
-        console.log(userId);
-        console.log(socketId);
-
         User.update({id: userId}, {socketId: socketId}).exec(function afterwards(err, updated) {
 
             if (err) {
                 return res.json(err);
             } else {
-                console.log('Updated user to have name ' + updated[0].name);
                 return res.json({updated: updated[0].name});
             }
         });
@@ -85,6 +77,37 @@ module.exports = {
                 }
             });
         }
+
+    },
+
+    findUserChats: function (req, res) {
+        var userId = req.param('userId');
+        console.log(userId);
+
+        Chat.find({
+            or: [
+                {user1: userId},
+                {user2: userId}
+            ]
+        }).exec(function (err, chats) {
+            if (err) {
+                return req.json(err);
+            } else {
+                for (var i in chats) {
+                    Message.findOne({
+                        where: {chat: chats[i].id}, sort: 'id DESC'
+                    }).exec(function lastMessage(error, message) {
+                        if(!error && message) {
+                            chats[i].message = message;
+                        }
+
+                        if(chats.length -1 == i) {
+                            return res.json(chats);
+                        }
+                    });
+                }
+            }
+        });
 
     }
 
