@@ -36,7 +36,8 @@ module.exports.routes = {
         view: 'homepage'
     },
     'get /updateSocketId/:user' : 'MainController.updateSocketId',
-    'get /message' : 'MainController.addMessage'
+    'get /message' : 'MainController.addMessage',
+    'get /login' :'MainController.userLogin'
 
     /***************************************************************************
      *                                                                          *

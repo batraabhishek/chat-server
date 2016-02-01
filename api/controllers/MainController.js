@@ -67,6 +67,25 @@ module.exports = {
                 });
             });
         });
+    },
+
+    userLogin: function (req, res) {
+        var userName = req.param('username');
+        var password = req.param('password');
+
+        if (!userName || !password) {
+            return res.send(404, {error: 'Username/Password cannot be empty'});
+        } else {
+            User.findOne({username: userName, password: password}).exec(function findOneCB(err, user) {
+
+                if (err || !user) {
+                    return res.send(404, {error: 'Username/Password wrong'});
+                } else {
+                    return res.json(user);
+                }
+            });
+        }
+
     }
 
 
