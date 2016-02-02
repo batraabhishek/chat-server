@@ -84,13 +84,16 @@ module.exports = {
                 {user1: userId},
                 {user2: userId}
             ]
-        }).populate('lastMessage').exec(function (err, chats) {
-            if (err) {
-                return res.json(err);
-            } else {
-                return res.json(chats);
-            }
-        });
+        }).populate('user1')
+            .populate('user2')
+            .populate('lastMessage')
+            .exec(function (err, chats) {
+                if (err) {
+                    return res.json(err);
+                } else {
+                    return res.json(chats);
+                }
+            });
     }
 
 };
