@@ -18,8 +18,10 @@ module.exports = {
         messages: {
             collection: 'message',
             via: 'chat'
+        },
+        lastMessage: {
+            model: 'message'
         }
-
     }
 };
 

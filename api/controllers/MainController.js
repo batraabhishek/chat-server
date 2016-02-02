@@ -7,16 +7,6 @@
 
 module.exports = {
 
-    getAllChatMessages: function (req, res) {
-
-        var chatId = req.param('chatId');
-
-        Chat.findById(chatId).exec(function (error, data) {
-            return res.json(data);
-        });
-
-    },
-
     updateSocketId: function (req, res) {
 
         var userId = req.param('user');
@@ -50,13 +40,18 @@ module.exports = {
 
             var chatId = created.chat;
             Chat.findById(chatId).exec(function (error, chat) {
-                console.log(error);
-                console.log(chat);
                 var otherUser = created.sender == chat[0].user1 ? chat[0].user2 : chat[0].user1;
-                console.log(otherUser);
                 User.findById(otherUser).exec(function (error, user) {
                     return res.json(user);
                 });
+            });
+
+            Chat.update({id: created.chat}, {lastMessage: created.id}).exec(function afterwards(error, updated) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log(updated);
+                }
             });
         });
     },
@@ -89,28 +84,14 @@ module.exports = {
                 {user1: userId},
                 {user2: userId}
             ]
-        }).exec(function (err, chats) {
+        }).populate('lastMessage').exec(function (err, chats) {
             if (err) {
-                return req.json(err);
+                return res.json(err);
             } else {
-                for (var i in chats) {
-                    Message.findOne({
-                        where: {chat: chats[i].id}, sort: 'id DESC'
-                    }).exec(function lastMessage(error, message) {
-                        if(!error && message) {
-                            chats[i].message = message;
-                        }
-
-                        if(chats.length -1 == i) {
-                            return res.json(chats);
-                        }
-                    });
-                }
+                return res.json(chats);
             }
         });
-
     }
-
 
 };
 
