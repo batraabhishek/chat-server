@@ -5,6 +5,9 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var fs = require('fs');
+var randomstring = require("randomstring");
+
 module.exports = {
 
     updateSocketId: function (req, res) {
@@ -27,14 +30,28 @@ module.exports = {
         var message = req.param('message');
         var sender = req.param('sender');
         var chat = req.param('chat');
-        var userPic = req.param('userPic');
+        var userPic = req.param('image');
+
+        var dir = 'uploads';
+
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+
+        var path = dir + '/' + randomstring.generate(16) + ".jpg";
 
         var messageJson = {
             message: message,
             sender: sender,
             chat: chat,
-            userPic: userPic
+            userPic: path
         };
+
+        fs.writeFile(path, new Buffer(image, 'base64'), function (error) {
+            if (error) {
+                console.log(error);
+            }
+        });
 
         Message.create(messageJson).exec(function createCb(error, created) {
 
@@ -94,6 +111,28 @@ module.exports = {
                     return res.json(chats);
                 }
             });
+    },
+
+    saveBase64Image: function (req, res) {
+
+        var dir = 'uploads';
+
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+
+        var path = dir + '/' + randomstring.generate(12) + ".jpg";
+
+        var image = req.param('image');
+        fs.writeFile(path, new Buffer(image, 'base64'), function (error) {
+
+            if (!error) {
+                return res.json({data: path});
+            } else {
+                return res.json(error);
+            }
+        });
+
     }
 
 };

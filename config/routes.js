@@ -38,7 +38,8 @@ module.exports.routes = {
     'get /updateSocketId/:user' : 'MainController.updateSocketId',
     'get /message' : 'MainController.addMessage',
     'post /login' :'MainController.userLogin',
-    'get /chats' : 'MainController.findUserChats'
+    'get /chats' : 'MainController.findUserChats',
+    'post /imageUpload' : 'MainController.saveBase64Image'
 
     /***************************************************************************
      *                                                                          *
