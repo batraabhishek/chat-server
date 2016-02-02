@@ -103,7 +103,7 @@ function sendNewMessage(socket, data) {
     console.log(data.body);
     console.log(data);
     var url = 'http://localhost:1337/message?message=' + encodeURIComponent(data.message)
-        + '&sender=' + data.sender + '&userPic=' + ""
+        + '&sender=' + data.sender + '&userPic=sample'
         + '&chat=' + data.chat + "&image=" + data.image;
 
     console.log(url);
