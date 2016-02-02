@@ -30,7 +30,7 @@ module.exports = {
         var message = req.param('message');
         var sender = req.param('sender');
         var chat = req.param('chat');
-        var userPic = req.param('image');
+        var image = req.param('image');
 
         var dir = 'uploads';
 
