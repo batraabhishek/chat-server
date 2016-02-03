@@ -79,7 +79,7 @@ var needle = require('needle');
         });
 
         socket.on('send_new_message', function (data) {
-            sendNewMessage(socket, data);
+            sendNewMessage(data);
         });
 
     });
@@ -98,17 +98,14 @@ function registerMobile(socket, data) {
     });
 }
 
-function sendNewMessage(socket, data) {
+function sendNewMessage(data) {
 
-    console.log(data);
     var url = 'http://localhost:1337/message?message=' + encodeURIComponent(data.message)
         + '&sender=' + data.sender + '&userPic=' + encodeURIComponent('http://www.google.com')
         + '&chat=' + data.chat + "&image=" + encodeURIComponent(data.image);
 
-    console.log(url);
     request(url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            console.log(body)
             io.to(body.socketId).emit('new_message', data);
         }
     });

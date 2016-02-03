@@ -33,14 +33,15 @@ module.exports = {
         var image = req.param('image');
 
         var dir = 'assets/images';
-
-        var path = dir + '/' + randomstring.generate(16) + ".jpg";
+        var filaName =  randomstring.generate(16) + ".jpg"
+        var path = dir + '/' + filaName;
+        var relativepath = 'images/' + filaName;
 
         var messageJson = {
             message: message,
             sender: sender,
             chat: chat,
-            userPic: path
+            userPic: relativepath
         };
 
         fs.writeFile(path, new Buffer(image, 'base64'), function (error) {
