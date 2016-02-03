@@ -32,11 +32,7 @@ module.exports = {
         var chat = req.param('chat');
         var image = req.param('image');
 
-        var dir = 'uploads';
-
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
+        var dir = 'assets/images';
 
         var path = dir + '/' + randomstring.generate(16) + ".jpg";
 
