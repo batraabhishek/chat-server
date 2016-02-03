@@ -100,10 +100,7 @@ function registerMobile(socket, data) {
 
 function sendNewMessage(data) {
 
-    var url = 'http://localhost:1337/message?message=' + encodeURIComponent(data.message)
-        + '&sender=' + data.sender + '&userPic=' + encodeURIComponent('http://www.google.com')
-        + '&chat=' + data.chat + "&image=" + encodeURIComponent(data.image);
-
+    var url = 'http://localhost:1337/message';
     var postData = {
         message: data.message,
         sender: data.sender,
@@ -112,38 +109,14 @@ function sendNewMessage(data) {
         image: data.image
     };
 
-    //var postDataString = querystring.stringify(postData);
 
-    //var postOptions = {
-    //    host: 'localhost',
-    //    port: '1337',
-    //    path: '/message',
-    //    method: 'POST',
-    //    headers: {
-    //        'Content-Type': 'application/x-www-form-urlencoded',
-    //        'Content-Length': Buffer.byteLength(postDataString)
-    //    }
-    //};
-
-    //var postRequest = http.request(postOptions, function (res) {
-    //    res.setEncoding('utf8');
-    //    res.on('data', function (body) {
-    //        console.log('<-- Socket Start -->');
-    //        console.log(body);
-    //        console.log('<-- Socket End -->');
-    //
-    //        var jsonBody = JSON.parse(body);
-    //        data.image = body.imagePath;
-    //        io.to(jsonBody.socketId).emit('new_message', data);
-    //    });
-    //});
-    //
-    //postRequest.write(postDataString);
-    //postRequest.end();
-
-    requestify.post('http://localhost:1337/message', postData)
+    requestify.post(url, postData)
         .then(function (response) {
-            // Get the response body (JSON parsed or jQuery object for XMLs)
-            console.log(response.getBody());
+            var jsonBody = response.getBody();
+            console.log('<-- Socket Start -->');
+            console.log(jsonBody);
+            console.log('<-- Socket End -->');
+            data.image = jsonBody.imagePath;
+            io.to(jsonBody.socketId).emit('new_message', data);
         });
 }
