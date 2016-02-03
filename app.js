@@ -108,7 +108,7 @@ function sendNewMessage(data) {
 
             var jsonBody = JSON.parse(body);
             data.image = body.imagePath;
-            io.to(body.socketId).emit('new_message', data);
+            io.to(jsonBody.socketId).emit('new_message', data);
         }
     });
 }
