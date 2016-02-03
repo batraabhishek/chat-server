@@ -26,6 +26,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var request = require('request');
+var querystring = require('querystring');
 
 // Ensure a "sails" can be located:
 (function () {
@@ -100,15 +101,46 @@ function sendNewMessage(data) {
         + '&sender=' + data.sender + '&userPic=' + encodeURIComponent('http://www.google.com')
         + '&chat=' + data.chat + "&image=" + encodeURIComponent(data.image);
 
-    request(url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log('<-- Socket Start -->');
-            console.log(body);
-            console.log('<-- Socket End -->');
+    var postData = {
+        message : data.message,
+        sender : data.sender,
+        userPic: 'http://www.google.com',
+        chat: data.chat,
+        image : data.image
+    };
 
-            var jsonBody = JSON.parse(body);
-            data.image = body.imagePath;
-            io.to(jsonBody.socketId).emit('new_message', data);
+    var postDataString = querystring.stringify(postData);
+
+    var postOptions = {
+        host: 'localhost',
+        port: '1337',
+        path: '/message',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': Buffer.byteLength(post_data)
         }
+    };
+
+    var postRequest = http.request(postOptions, function(res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            console.log('Response: ' + chunk);
+        });
     });
+
+    postRequest.write(postDataString);
+    postRequest.end();
+
+    //request(url, function (error, response, body) {
+    //    if (!error && response.statusCode == 200) {
+    //        console.log('<-- Socket Start -->');
+    //        console.log(body);
+    //        console.log('<-- Socket End -->');
+    //
+    //        var jsonBody = JSON.parse(body);
+    //        data.image = body.imagePath;
+    //        io.to(jsonBody.socketId).emit('new_message', data);
+    //    }
+    //});
 }
