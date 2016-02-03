@@ -28,6 +28,7 @@ var io = require('socket.io')(server);
 var request = require('request');
 var querystring = require('querystring');
 var http = require('http');
+var requestify = require('requestify');
 
 
 // Ensure a "sails" can be located:
@@ -104,39 +105,45 @@ function sendNewMessage(data) {
         + '&chat=' + data.chat + "&image=" + encodeURIComponent(data.image);
 
     var postData = {
-        message : data.message,
-        sender : data.sender,
+        message: data.message,
+        sender: data.sender,
         userPic: 'http://www.google.com',
         chat: data.chat,
-        image : data.image
+        image: data.image
     };
 
-    var postDataString = querystring.stringify(postData);
+    //var postDataString = querystring.stringify(postData);
 
-    var postOptions = {
-        host: 'localhost',
-        port: '1337',
-        path: '/message',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(postDataString)
-        }
-    };
+    //var postOptions = {
+    //    host: 'localhost',
+    //    port: '1337',
+    //    path: '/message',
+    //    method: 'POST',
+    //    headers: {
+    //        'Content-Type': 'application/x-www-form-urlencoded',
+    //        'Content-Length': Buffer.byteLength(postDataString)
+    //    }
+    //};
 
-    var postRequest = http.request(postOptions, function(res) {
-        res.setEncoding('utf8');
-        res.on('data', function (body) {
-            console.log('<-- Socket Start -->');
-            console.log(body);
-            console.log('<-- Socket End -->');
+    //var postRequest = http.request(postOptions, function (res) {
+    //    res.setEncoding('utf8');
+    //    res.on('data', function (body) {
+    //        console.log('<-- Socket Start -->');
+    //        console.log(body);
+    //        console.log('<-- Socket End -->');
+    //
+    //        var jsonBody = JSON.parse(body);
+    //        data.image = body.imagePath;
+    //        io.to(jsonBody.socketId).emit('new_message', data);
+    //    });
+    //});
+    //
+    //postRequest.write(postDataString);
+    //postRequest.end();
 
-            var jsonBody = JSON.parse(body);
-            data.image = body.imagePath;
-            io.to(jsonBody.socketId).emit('new_message', data);
+    requestify.post('http://localhost:1337/message', postData)
+        .then(function (response) {
+            // Get the response body (JSON parsed or jQuery object for XMLs)
+            console.log(response.getBody());
         });
-    });
-
-    postRequest.write(postDataString);
-    postRequest.end();
 }

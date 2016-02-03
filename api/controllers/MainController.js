@@ -60,6 +60,7 @@ module.exports = {
                     var otherUser = created.sender == chat.user1 ? chat.user2 : chat.user1;
                     User.findOneById(otherUser).exec(function (error, user) {
                         user.imagePath = relativepath;
+
                         return res.json(user);
                     });
                 });
