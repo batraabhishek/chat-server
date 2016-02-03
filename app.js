@@ -26,7 +26,6 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var request = require('request');
-var needle = require('needle');
 
 // Ensure a "sails" can be located:
 (function () {
@@ -106,7 +105,7 @@ function sendNewMessage(data) {
             console.log('<-- Socket Start -->');
             console.log(body);
             console.log('<-- Socket End -->');
-            io.to(body[0].socketId).emit('new_message', data);
+            io.to(body.socketId).emit('new_message', data);
         }
     });
 }

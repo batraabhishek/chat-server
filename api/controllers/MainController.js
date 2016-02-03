@@ -93,7 +93,6 @@ module.exports = {
 
     findUserChats: function (req, res) {
         var userId = req.param('userId');
-        console.log(userId);
 
         Chat.find({
             or: [
