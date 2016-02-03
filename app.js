@@ -105,6 +105,9 @@ function sendNewMessage(data) {
             console.log('<-- Socket Start -->');
             console.log(body);
             console.log('<-- Socket End -->');
+
+            var jsonBody = JSON.parse(body);
+            data.image = body.imagePath;
             io.to(body.socketId).emit('new_message', data);
         }
     });
