@@ -57,8 +57,8 @@ module.exports = {
             } else {
                 var chatId = created.chat;
                 Chat.findOneById(chatId).exec(function (error, chat) {
-                    var otherUser = created.sender == chat[0].user1 ? chat[0].user2 : chat[0].user1;
-                    User.findById(otherUser).exec(function (error, user) {
+                    var otherUser = created.sender == chat.user1 ? chat.user2 : chat.user1;
+                    User.findOneById(otherUser).exec(function (error, user) {
                         return res.json(user);
                     });
                 });
@@ -66,8 +66,6 @@ module.exports = {
                 Chat.update({id: created.chat}, {lastMessage: created.id}).exec(function afterwards(error, updated) {
                     if (error) {
                         console.log(error);
-                    } else {
-                        console.log(updated);
                     }
                 });
             }

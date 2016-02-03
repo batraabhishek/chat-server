@@ -87,11 +87,8 @@ var needle = require('needle');
 
 
 function registerMobile(socket, data) {
-    console.log(data);
     var userId = data.userId;
-    console.log(socket.id)
     var url = 'http://localhost:1337/updateSocketId/' + userId + '?socketId=' + encodeURIComponent(socket.id);
-    console.log(url)
     request(url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
         }
@@ -106,8 +103,9 @@ function sendNewMessage(data) {
 
     request(url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            console.log('Sending back data');
+            console.log('<-- Socket Start -->');
             console.log(body);
+            console.log('<-- Socket End -->');
             io.to(body[0].socketId).emit('new_message', data);
         }
     });
