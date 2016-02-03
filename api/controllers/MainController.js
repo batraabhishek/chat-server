@@ -56,7 +56,7 @@ module.exports = {
                 return res.json(error);
             } else {
                 var chatId = created.chat;
-                Chat.findById(chatId).exec(function (error, chat) {
+                Chat.findOneById(chatId).exec(function (error, chat) {
                     var otherUser = created.sender == chat[0].user1 ? chat[0].user2 : chat[0].user1;
                     User.findById(otherUser).exec(function (error, user) {
                         return res.json(user);

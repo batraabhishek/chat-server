@@ -106,7 +106,9 @@ function sendNewMessage(data) {
 
     request(url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            io.to(body.socketId).emit('new_message', data);
+            console.log('Sending back data');
+            console.log(body);
+            io.to(body[0].socketId).emit('new_message', data);
         }
     });
 }
