@@ -102,7 +102,7 @@ function sendNewMessage(socket, data) {
 
     console.log(data);
     var url = 'http://localhost:1337/message?message=' + encodeURIComponent(data.message)
-        + '&sender=' + data.sender + '&userPic=' + encodeURIComponent('http://www.google.com');
+        + '&sender=' + data.sender + '&userPic=' + encodeURIComponent('http://www.google.com')
         + '&chat=' + data.chat + "&image=" + encodeURIComponent(data.image);
 
     console.log(url);

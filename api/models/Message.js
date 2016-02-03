@@ -14,7 +14,7 @@ module.exports = {
       required: true
     },
     userPic: {
-      type: 'url',
+      type: 'string',
       required: true
     },
     sender: {
