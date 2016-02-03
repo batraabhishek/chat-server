@@ -27,6 +27,8 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var request = require('request');
 var querystring = require('querystring');
+var http = require('http');
+
 
 // Ensure a "sails" can be located:
 (function () {
@@ -118,29 +120,23 @@ function sendNewMessage(data) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(post_data)
+            'Content-Length': Buffer.byteLength(postDataString)
         }
     };
 
     var postRequest = http.request(postOptions, function(res) {
         res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            console.log('Response: ' + chunk);
+        res.on('data', function (body) {
+            console.log('<-- Socket Start -->');
+            console.log(body);
+            console.log('<-- Socket End -->');
+
+            var jsonBody = JSON.parse(body);
+            data.image = body.imagePath;
+            io.to(jsonBody.socketId).emit('new_message', data);
         });
     });
 
     postRequest.write(postDataString);
     postRequest.end();
-
-    //request(url, function (error, response, body) {
-    //    if (!error && response.statusCode == 200) {
-    //        console.log('<-- Socket Start -->');
-    //        console.log(body);
-    //        console.log('<-- Socket End -->');
-    //
-    //        var jsonBody = JSON.parse(body);
-    //        data.image = body.imagePath;
-    //        io.to(jsonBody.socketId).emit('new_message', data);
-    //    }
-    //});
 }
