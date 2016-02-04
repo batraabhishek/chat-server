@@ -33,7 +33,7 @@ module.exports = {
         var image = req.param('image');
 
         var dir = 'assets/images';
-        var filaName =  randomstring.generate(16) + ".jpg"
+        var filaName = randomstring.generate(16) + ".jpg"
         var path = dir + '/' + filaName;
         var relativepath = 'images/' + filaName;
 
@@ -133,7 +133,39 @@ module.exports = {
             }
         });
 
-    }
+    },
+
+    createNewChatRoom: function (req, res) {
+
+        var user1 = req.param('user1');
+        var user2 = req.param('user2');
+
+        console.log('Executed till here');
+
+        Chat.findOne({
+            or: [
+                {user1: user1, user2: user2},
+                {user2: user1, user1: user2}
+            ]
+        }).populate('lastMessage').populate('messages').exec(function (error, chat) {
+            if (error) {
+                return res.json(error);
+            } else {
+
+                if (chat) {
+                    console.log('Chat found');
+                    console.log(chat)
+                    return res.json(chat);
+                } else {
+                    console.log('Need to create new chat');
+                    return res.json({ok: 'ok'});
+                }
+
+            }
+        });
+
+
+    },
 
 };
 
