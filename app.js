@@ -100,6 +100,8 @@ function registerMobile(socket, data) {
 
 function sendNewMessage(data) {
 
+    var dt = new Date();
+    data.createdAt = dt.toISOString();
     var url = 'http://localhost:1337/message';
     var postData = {
         message: data.message,
