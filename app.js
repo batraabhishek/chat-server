@@ -113,10 +113,9 @@ function sendNewMessage(data) {
     requestify.post(url, postData)
         .then(function (response) {
             var jsonBody = response.getBody();
-            console.log('<-- Socket Start -->');
-            console.log(jsonBody);
-            console.log('<-- Socket End -->');
             data.userPic = jsonBody.imagePath;
+            delete data.image;
+            console.log(data);
             io.to(jsonBody.socketId).emit('new_message', data);
         });
 }
