@@ -116,7 +116,7 @@ function sendNewMessage(data) {
             console.log('<-- Socket Start -->');
             console.log(jsonBody);
             console.log('<-- Socket End -->');
-            data.image = jsonBody.imagePath;
+            data.userPic = jsonBody.imagePath;
             io.to(jsonBody.socketId).emit('new_message', data);
         });
 }
