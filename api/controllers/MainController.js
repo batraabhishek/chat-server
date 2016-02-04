@@ -18,8 +18,10 @@ module.exports = {
 
             if (err) {
                 return res.json(err);
-            } else {
+            } else if (updated) {
                 return res.json({updated: updated[0].name});
+            } else {
+                return res.json({error: 'User does not exist'});
             }
         });
 
@@ -147,7 +149,10 @@ module.exports = {
                 {user1: user1, user2: user2},
                 {user2: user1, user1: user2}
             ]
-        }).populate('lastMessage').populate('messages').exec(function (error, chat) {
+        }).populate('lastMessage')
+            .populate('messages')
+            .populate('user1')
+            .populate('user2').exec(function (error, chat) {
             if (error) {
                 return res.json(error);
             } else {
@@ -158,14 +163,26 @@ module.exports = {
                     return res.json(chat);
                 } else {
                     console.log('Need to create new chat');
-                    return res.json({ok: 'ok'});
+                    var chatData = {
+                        user1: user1,
+                        user2: user2
+                    }
+
+                    Chat.create(chatData).exec(function (error, newChat) {
+                        if (error) {
+                            console.log(error);
+                            return res.json(error);
+                        } else {
+                            console.log(newChat);
+                            return res.json(newChat);
+                        }
+
+                    });
                 }
 
             }
         });
-
-
-    },
+    }
 
 };
 
