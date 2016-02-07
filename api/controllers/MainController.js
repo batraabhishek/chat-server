@@ -174,6 +174,7 @@ module.exports = {
                             return res.json(error);
                         } else {
                             console.log(newChat);
+                            newChat.messages = [];
                             return res.json(newChat);
                         }
 
