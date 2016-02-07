@@ -149,10 +149,7 @@ module.exports = {
                 {user1: user1, user2: user2},
                 {user2: user1, user1: user2}
             ]
-        }).populate('lastMessage')
-            .populate('messages')
-            .populate('user1')
-            .populate('user2').exec(function (error, chat) {
+        }).exec(function (error, chat) {
             if (error) {
                 return res.json(error);
             } else {
