@@ -82,7 +82,7 @@ var requestify = require('requestify');
         });
 
         socket.on('send_new_message', function (data) {
-            sendNewMessage(data);
+            sendNewMessage(socket, data);
         });
 
     });
@@ -98,7 +98,7 @@ function registerMobile(socket, data) {
     });
 }
 
-function sendNewMessage(data) {
+function sendNewMessage(socket, data) {
 
     var dt = new Date();
     data.createdAt = dt.toISOString();
@@ -119,5 +119,6 @@ function sendNewMessage(data) {
             delete data.image;
             console.log(data);
             io.to(jsonBody.socketId).emit('new_message', data);
+            io.to(socket.id).emit('new_message', data);
         });
 }
