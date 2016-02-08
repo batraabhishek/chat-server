@@ -49,27 +49,27 @@ module.exports = {
         fs.writeFile(path, new Buffer(image, 'base64'), function (error) {
             if (error) {
                 console.log(error);
-            }
-        });
-
-        Message.create(messageJson).exec(function createCb(error, created) {
-
-            if (error) {
-                return res.json(error);
             } else {
-                var chatId = created.chat;
-                Chat.findOneById(chatId).exec(function (error, chat) {
-                    var otherUser = created.sender == chat.user1 ? chat.user2 : chat.user1;
-                    User.findOneById(otherUser).exec(function (error, user) {
-                        user.imagePath = relativepath;
+                Message.create(messageJson).exec(function createCb(error, created) {
 
-                        return res.json(user);
-                    });
-                });
-
-                Chat.update({id: created.chat}, {lastMessage: created.id}).exec(function afterwards(error, updated) {
                     if (error) {
-                        console.log(error);
+                        return res.json(error);
+                    } else {
+                        var chatId = created.chat;
+                        Chat.findOneById(chatId).exec(function (error, chat) {
+                            var otherUser = created.sender == chat.user1 ? chat.user2 : chat.user1;
+                            User.findOneById(otherUser).exec(function (error, user) {
+                                user.imagePath = relativepath;
+
+                                return res.json(user);
+                            });
+                        });
+
+                        Chat.update({id: created.chat}, {lastMessage: created.id}).exec(function afterwards(error, updated) {
+                            if (error) {
+                                console.log(error);
+                            }
+                        });
                     }
                 });
             }
