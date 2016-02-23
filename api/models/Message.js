@@ -7,22 +7,22 @@
 
 module.exports = {
 
-  attributes: {
+    attributes: {
 
-    message: {
-      type: 'string',
-      required: true
-    },
-    userPic: {
-      type: 'string',
-      required: true
-    },
-    sender: {
-      model: 'user'
-    },
-    chat: {
-      model: 'chat'
+        message: {
+            type: 'string',
+            required: true
+        },
+        image: {
+            type: 'string',
+            required: true
+        },
+        sender: {
+            model: 'user'
+        },
+        chat: {
+            model: 'chat'
+        }
     }
-  }
 };
 

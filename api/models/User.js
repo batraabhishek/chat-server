@@ -9,23 +9,14 @@ module.exports = {
 
     attributes: {
 
-        name: {
-            type: 'string',
-            required: true
-        },
         username: {
             type: 'string',
             required: true,
-            unique: true
         },
-        email: {
-            type: 'email',
+        number: {
+            type: 'string',
             required: true,
             unique: true
-        },
-        password: {
-            type: 'string',
-            required: true
         },
         socketId: {
             type: 'string',
