@@ -19,7 +19,8 @@ module.exports = {
             if (err) {
                 return res.json(err);
             } else if (updated) {
-                return res.json({updated: updated[0].name});
+                console.log(updated);
+                return res.json(updated);
             } else {
                 return res.json({error: 'User does not exist'});
             }
@@ -187,7 +188,7 @@ module.exports = {
         User.find({
             username: {'!': [username]}
         }).exec(function (error, users) {
-            if(error) {
+            if (error) {
                 res.json(error)
             } else {
                 res.json(users);
