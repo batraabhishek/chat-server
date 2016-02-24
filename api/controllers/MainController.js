@@ -5,7 +5,6 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var fs = require('fs');
 var randomstring = require("randomstring");
 
 module.exports = {
@@ -33,7 +32,7 @@ module.exports = {
         var message = req.param('message');
         var sender = req.param('sender');
         var chat = req.param('chat');
-        var image = req.param('image');
+        var image = req.param('imageUrl');
 
         var dir = 'assets/images';
         var filaName = randomstring.generate(16) + ".jpg"
@@ -47,30 +46,24 @@ module.exports = {
             userPic: relativepath
         };
 
-        fs.writeFile(path, new Buffer(image, 'base64'), function (error) {
+        Message.create(messageJson).exec(function createCb(error, created) {
+
             if (error) {
-                console.log(error);
+                return res.json(error);
             } else {
-                Message.create(messageJson).exec(function createCb(error, created) {
+                var chatId = created.chat;
+                Chat.findOneById(chatId).exec(function (error, chat) {
+                    var otherUser = created.sender == chat.user1 ? chat.user2 : chat.user1;
+                    User.findOneById(otherUser).exec(function (error, user) {
+                        user.imagePath = relativepath;
 
+                        return res.json(user);
+                    });
+                });
+
+                Chat.update({id: created.chat}, {lastMessage: created.id}).exec(function afterwards(error, updated) {
                     if (error) {
-                        return res.json(error);
-                    } else {
-                        var chatId = created.chat;
-                        Chat.findOneById(chatId).exec(function (error, chat) {
-                            var otherUser = created.sender == chat.user1 ? chat.user2 : chat.user1;
-                            User.findOneById(otherUser).exec(function (error, user) {
-                                user.imagePath = relativepath;
-
-                                return res.json(user);
-                            });
-                        });
-
-                        Chat.update({id: created.chat}, {lastMessage: created.id}).exec(function afterwards(error, updated) {
-                            if (error) {
-                                console.log(error);
-                            }
-                        });
+                        console.log(error);
                     }
                 });
             }

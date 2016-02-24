@@ -79,15 +79,8 @@ function registerMobile(socket, data) {
 function sendNewMessage(data) {
 
     var url = 'http://localhost:1337/message';
-    var postData = {
-        message: data.message,
-        sender: data.sender,
-        chat: data.chat,
-        image: data.image
-    };
 
-
-    requestify.post(url, postData)
+    requestify.post(url, data)
         .then(function (response) {
             var jsonBody = response.getBody();
             io.to(jsonBody.socketId).emit('new_message', data);

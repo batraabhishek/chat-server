@@ -9,11 +9,11 @@ module.exports = {
 
     attributes: {
 
-        user1: {
+        sender: {
             model: 'user'
         },
-        user2: {
-            model: 'user'
+        user : {
+            model : 'user'
         },
         messages: {
             collection: 'message',

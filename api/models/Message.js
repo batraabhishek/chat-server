@@ -17,9 +17,6 @@ module.exports = {
             type: 'string',
             required: true
         },
-        sender: {
-            model: 'user'
-        },
         chat: {
             model: 'chat'
         }

@@ -36,12 +36,13 @@ module.exports.routes = {
         view: 'homepage'
     },
     'get /updateSocketId/:user': 'MainController.updateSocketId',
-    'post /message': 'MainController.addMessage',
+    'post /message': 'ChatController.createNewMessage',
     'post /login': 'MainController.userLogin',
     'get /chats': 'MainController.findUserChats',
     'post /imageUpload': 'MainController.saveBase64Image',
     'get /newChat': 'MainController.createNewChatRoom',
-    'get /users': 'MainController.getUsers'
+    'get /users': 'MainController.getUsers',
+    'get /messages': 'ChatController.getPendingMessages'
 
     /***************************************************************************
      *                                                                          *
