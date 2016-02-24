@@ -58,7 +58,7 @@ module.exports = {
                     if (error) {
                         res.json(error);
                     } else {
-                        User.findOneById(toUser).exec(function (error, user) {
+                        User.findOneById(toUser).populate('sender').exec(function (error, user) {
                             if (error) {
                                 res.json(error)
                             } else if (user) {
@@ -97,7 +97,7 @@ module.exports = {
                             if (error) {
                                 res.json(error);
                             } else {
-                                User.findOneById(toUser).exec(function (error, user) {
+                                User.findOneById(toUser).populate('sender').exec(function (error, user) {
                                     if (error) {
                                         res.json(error)
                                     } else if (user) {
