@@ -58,7 +58,17 @@ module.exports = {
                     if (error) {
                         res.json(error);
                     } else {
-                        res.json(message);
+                        User.findOneById(toUser).exec(function (error, user) {
+                            if (eror) {
+                                res.json(error)
+                            } else if (user) {
+                                message.socketId = user.socketId;
+                                res.json(message);
+                            } else {
+                                res.json({error: 'User not found'});
+                            }
+
+                        });
                     }
                 });
             } else {
@@ -87,7 +97,17 @@ module.exports = {
                             if (error) {
                                 res.json(error);
                             } else {
-                                res.json(message);
+                                User.findOneById(toUser).exec(function (error, user) {
+                                    if (eror) {
+                                        res.json(error)
+                                    } else if (user) {
+                                        message.socketId = user.socketId;
+                                        res.json(message);
+                                    } else {
+                                        res.json({error: 'User not found'});
+                                    }
+
+                                });
                             }
                         });
                     }
