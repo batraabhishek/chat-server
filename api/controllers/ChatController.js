@@ -36,84 +36,61 @@ module.exports = {
         console.log('From User ' + fromUser);
         console.log('To User ' + toUser);
 
-        // find the toUser;
-
         Chat.findOne({sender: fromUser, user: toUser}).exec(function (error, chat) {
 
+            var messageData = {
+                message: message,
+                image: imageUrl,
+                chat: chat
+            };
 
             if (error) {
                 return res.json(error);
             } else if (chat) {
-
-                var messageData = {
-                    message: message,
-                    image: imageUrl,
-                    chat: chat
-                };
-
-                console.log('Chat found');
-                console.log('Adding new message');
-                Message.create(messageData).exec(function (error, message) {
-
-                    if (error) {
-                        res.json(error);
-                    } else {
-                        User.findOneById(toUser).populate('sender').exec(function (error, user) {
-                            if (error) {
-                                res.json(error)
-                            } else if (user) {
-                                message.socketId = user.socketId;
-                                res.json(message);
-                            } else {
-                                res.json({error: 'User not found'});
-                            }
-
-                        });
-                    }
-                });
+                messageData.chat = chat;
+                createMessage(res, messageData)
             } else {
-                // Create Chat
-                console.log('Creating new chat');
-
                 var chatData = {
                     sender: fromUser,
                     user: toUser,
                     messages: []
                 }
 
-                Chat.create(chatData).exec(function (error, chat) {
-
-                    if (error) {
-                        return res.json(error);
-                    } else if (chat) {
-                        var messageData = {
-                            message: message,
-                            image: imageUrl,
-                            chat: chat
-                        };
-
-                        console.log('Creating message')
-                        Message.create(messageData).exec(function (error, message) {
-                            if (error) {
-                                res.json(error);
-                            } else {
-                                User.findOneById(toUser).populate('sender').exec(function (error, user) {
-                                    if (error) {
-                                        res.json(error)
-                                    } else if (user) {
-                                        message.socketId = user.socketId;
-                                        res.json(message);
-                                    } else {
-                                        res.json({error: 'User not found'});
-                                    }
-
-                                });
-                            }
-                        });
-                    }
-                });
+                createChat(res, chatData, messageData)
             }
         });
     }
 };
+
+function createChat(res, chatData, messageData) {
+    Chat.create(chatData).exec(function (error, chat) {
+
+        if (error) {
+            return res.json(error);
+        } else if (chat) {
+            messageData.chat = chat;
+            createMessage(res, messageData);
+        }
+    });
+}
+
+function createMessage(res, messageData) {
+    Message.create(messageData).populate('chat').exec(function (error, message) {
+        if (error) {
+            res.json(error);
+        } else {
+            User.findOneById(toUser).exec(function (error, user) {
+                if (error) {
+                    res.json(error)
+                } else if (user) {
+                    message.socketId = user.socketId;
+                    res.json(message);
+                } else {
+                    res.json({error: 'User not found'});
+                }
+
+            });
+        }
+    });
+}
 
