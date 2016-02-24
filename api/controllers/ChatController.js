@@ -33,6 +33,9 @@ module.exports = {
         var imageUrl = req.param('imageUrl');
         var toUser = req.param('toUser');
 
+        console.log('From User ' + fromUser);
+        console.log('To User ' + toUser);
+
         // find the toUser;
 
         Chat.findOne({sender: fromUser, user: toUser}).exec(function (error, chat) {
