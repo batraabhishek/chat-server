@@ -27,49 +27,6 @@ module.exports = {
 
     },
 
-    addMessage: function (req, res) {
-
-        var message = req.param('message');
-        var sender = req.param('sender');
-        var chat = req.param('chat');
-        var image = req.param('imageUrl');
-
-        var dir = 'assets/images';
-        var filaName = randomstring.generate(16) + ".jpg"
-        var path = dir + '/' + filaName;
-        var relativepath = 'images/' + filaName;
-
-        var messageJson = {
-            message: message,
-            sender: sender,
-            chat: chat,
-            userPic: relativepath
-        };
-
-        Message.create(messageJson).exec(function createCb(error, created) {
-
-            if (error) {
-                return res.json(error);
-            } else {
-                var chatId = created.chat;
-                Chat.findOneById(chatId).exec(function (error, chat) {
-                    var otherUser = created.sender == chat.user1 ? chat.user2 : chat.user1;
-                    User.findOneById(otherUser).exec(function (error, user) {
-                        user.imagePath = relativepath;
-
-                        return res.json(user);
-                    });
-                });
-
-                Chat.update({id: created.chat}, {lastMessage: created.id}).exec(function afterwards(error, updated) {
-                    if (error) {
-                        console.log(error);
-                    }
-                });
-            }
-        });
-    },
-
     userLogin: function (req, res) {
         var userName = req.param('username');
         var password = req.param('password');
@@ -107,28 +64,6 @@ module.exports = {
                     return res.json(chats);
                 }
             });
-    },
-
-    saveBase64Image: function (req, res) {
-
-        var dir = 'uploads';
-
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
-
-        var path = dir + '/' + randomstring.generate(12) + ".jpg";
-
-        var image = req.param('image');
-        fs.writeFile(path, new Buffer(image, 'base64'), function (error) {
-
-            if (!error) {
-                return res.json({data: path});
-            } else {
-                return res.json(error);
-            }
-        });
-
     },
 
     createNewChatRoom: function (req, res) {
