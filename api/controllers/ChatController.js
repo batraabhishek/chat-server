@@ -75,7 +75,7 @@ function createChat(res, chatData, messageData, toUser) {
 }
 
 function createMessage(res, messageData, toUser) {
-    Message.create(messageData).populate('chat').exec(function (error, message) {
+    Message.create(messageData).exec(function (error, message) {
         if (error) {
             res.json(error);
         } else {
@@ -84,7 +84,7 @@ function createMessage(res, messageData, toUser) {
                     res.json(error)
                 } else if (user) {
                     message.socketId = user.socketId;
-                    res.json(message);
+                    findChatById(res, message);
                 } else {
                     res.json({error: 'User not found'});
                 }
@@ -92,5 +92,18 @@ function createMessage(res, messageData, toUser) {
             });
         }
     });
+}
+
+function findChatById (res, message) {
+
+    Chat.findOneById(message.chat).populate('sender').exec(function (error, chat) {
+
+        if(error) {
+            res.json(error)
+        } else {
+            message.chat = chat;
+            res.json(message);
+        }
+    })
 }
 
