@@ -59,7 +59,7 @@ module.exports = {
                         res.json(error);
                     } else {
                         User.findOneById(toUser).exec(function (error, user) {
-                            if (eror) {
+                            if (error) {
                                 res.json(error)
                             } else if (user) {
                                 message.socketId = user.socketId;
@@ -98,7 +98,7 @@ module.exports = {
                                 res.json(error);
                             } else {
                                 User.findOneById(toUser).exec(function (error, user) {
-                                    if (eror) {
+                                    if (error) {
                                         res.json(error)
                                     } else if (user) {
                                         message.socketId = user.socketId;
