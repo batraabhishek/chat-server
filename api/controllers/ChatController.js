@@ -53,16 +53,13 @@ module.exports = {
                 Message.create(messageData).exec(function (error, message) {
 
                     if (error) {
-                        return res.json(error);
+                        res.json(error);
                     } else {
-                        return res.json(message);
+                        res.json(message);
                     }
-
                 });
-
             } else {
                 // Create Chat
-
                 console.log('Creating new chat');
 
                 var chatData = {
@@ -76,7 +73,6 @@ module.exports = {
                     if (error) {
                         return res.json(error);
                     } else if (chat) {
-
                         var messageData = {
                             message: message,
                             image: imageUrl,
@@ -85,29 +81,16 @@ module.exports = {
 
                         console.log('Creating message')
                         Message.create(messageData).exec(function (error, message) {
-
                             if (error) {
-                                return res.json(error);
+                                res.json(error);
                             } else {
-                                return res.json(message);
+                                res.json(message);
                             }
-
                         });
                     }
                 });
             }
-
         });
-
-        Chat.findOne(toUser).exec(function (error, user) {
-            if (error) {
-                console.log(error);
-                res.json(error);
-            } else if (user) {
-
-            }
-        })
-
     }
 };
 
