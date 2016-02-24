@@ -85,6 +85,6 @@ function sendNewMessage(data) {
         .then(function (response) {
             var jsonBody = response.getBody();
             delete jsonBody.chat.messages;
-            io.to(jsonBody.socketId).emit('new_message', data);
+            io.to(jsonBody.socketId).emit('new_message', jsonBody);
         });
 }
