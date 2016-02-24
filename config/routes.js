@@ -40,7 +40,8 @@ module.exports.routes = {
     'post /login': 'MainController.userLogin',
     'get /chats': 'MainController.findUserChats',
     'post /imageUpload': 'MainController.saveBase64Image',
-    'get /newChat': 'MainController.createNewChatRoom'
+    'get /newChat': 'MainController.createNewChatRoom',
+    'get /users': 'MainController.getUsers'
 
     /***************************************************************************
      *                                                                          *
