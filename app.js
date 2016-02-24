@@ -78,6 +78,8 @@ function registerMobile(socket, data) {
 
 function sendNewMessage(data) {
 
+    console.log(data);
+
     var url = 'http://localhost:1337/message';
 
     requestify.post(url, data)
