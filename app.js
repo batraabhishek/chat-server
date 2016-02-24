@@ -84,6 +84,7 @@ function sendNewMessage(data) {
     requestify.post(url, data)
         .then(function (response) {
             var jsonBody = response.getBody();
+            delete jsonBody.chat.messages;
             io.to(jsonBody.socketId).emit('new_message', data);
         });
 }
