@@ -48,7 +48,7 @@ module.exports = {
                 return res.json(error);
             } else if (chat) {
                 messageData.chat = chat;
-                createMessage(res, messageData)
+                createMessage(res, messageData, toUser)
             } else {
                 var chatData = {
                     sender: fromUser,
@@ -56,25 +56,25 @@ module.exports = {
                     messages: []
                 }
 
-                createChat(res, chatData, messageData)
+                createChat(res, chatData, messageData, toUser)
             }
         });
     }
 };
 
-function createChat(res, chatData, messageData) {
+function createChat(res, chatData, messageData, toUser) {
     Chat.create(chatData).exec(function (error, chat) {
 
         if (error) {
             return res.json(error);
         } else if (chat) {
             messageData.chat = chat;
-            createMessage(res, messageData);
+            createMessage(res, messageData, toUser);
         }
     });
 }
 
-function createMessage(res, messageData) {
+function createMessage(res, messageData, toUser) {
     Message.create(messageData).populate('chat').exec(function (error, message) {
         if (error) {
             res.json(error);
