@@ -185,7 +185,7 @@ module.exports = {
     getUsers: function (req, res) {
         var username = req.param('username');
         User.find({
-            name: {'!': [username]}
+            username: {'!': [username]}
         }).exec(function (error, users) {
             if(error) {
                 res.json(error)
