@@ -41,7 +41,8 @@ module.exports.routes = {
     'get /chats': 'MainController.findUserChats',
     'get /newChat': 'MainController.createNewChatRoom',
     'get /users': 'MainController.getUsers',
-    'get /messages': 'ChatController.getPendingMessages'
+    'get /messages': 'ChatController.getPendingMessages',
+    'get /delete' : 'MessageController.deleteMessages'
 
     /***************************************************************************
      *                                                                          *
