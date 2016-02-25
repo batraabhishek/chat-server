@@ -12,7 +12,7 @@ module.exports = {
 
         var userId = req.param('id');
 
-        Chat.findOne({user: userId}).populate('messages').exec(function (error, chats) {
+        Chat.find({user: userId}).populate('messages').exec(function (error, chats) {
 
             if (error) {
                 res.json(error)
