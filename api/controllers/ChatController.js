@@ -12,16 +12,14 @@ module.exports = {
 
         var userId = req.param('id');
 
-        Chat.findOneByUser(id).populate('messages').exec(function (error, chats) {
+        Chat.findOne({user: userId}).populate('messages').exec(function (error, chats) {
 
             if (error) {
                 res.json(error)
             } else {
                 res.json(chats)
             }
-
-        })
-
+        });
     },
 
     createNewMessage: function (req, res) {
@@ -94,11 +92,11 @@ function createMessage(res, messageData, toUser) {
     });
 }
 
-function findChatById (res, message) {
+function findChatById(res, message) {
 
     Chat.findOneById(message.chat).populate('sender').exec(function (error, chat) {
 
-        if(error) {
+        if (error) {
             res.json(error)
         } else {
             message.chat = chat;
