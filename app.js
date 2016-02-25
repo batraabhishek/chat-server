@@ -7,6 +7,7 @@ var request = require('request');
 var querystring = require('querystring');
 var http = require('http');
 var requestify = require('requestify');
+var request = require("request");
 
 
 // Ensure a "sails" can be located:
@@ -63,6 +64,10 @@ var requestify = require('requestify');
             sendNewMessage(data);
         });
 
+        socket.on('message_acknowledgement', function (data) {
+            deleteMessage(data);
+        })
+
     });
 })();
 
@@ -77,10 +82,7 @@ function registerMobile(socket, data) {
 }
 
 function sendNewMessage(data) {
-
-
     var url = 'http://localhost:1337/message';
-
     requestify.post(url, data)
         .then(function (response) {
             var jsonBody = response.getBody();
@@ -89,4 +91,16 @@ function sendNewMessage(data) {
             delete jsonBody.chat.messages;
             io.to(jsonBody.socketId).emit('new_message', jsonBody);
         });
+}
+
+function deleteMessage(data) {
+    var messageId = data.messageId;
+    request({
+        uri: "http://localhost:1337/message/" + messageId,
+        method: "DELETE"
+    }, function (error, response, body) {
+        console.log('Message Deleted');
+        console.log(body);
+    });
+
 }
