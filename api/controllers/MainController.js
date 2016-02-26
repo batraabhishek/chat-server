@@ -4,8 +4,7 @@
  * @description :: Server-side logic for managing mains
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-
-var randomstring = require("randomstring");
+var fs = require('fs');
 
 module.exports = {
 
