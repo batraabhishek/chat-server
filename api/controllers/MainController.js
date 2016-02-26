@@ -122,7 +122,23 @@ module.exports = {
                 res.json(users);
             }
         });
-    }
+    },
 
+    uploadImage: function (req, res) {
+
+        var image = req.param('image');
+        var dir = 'assets/images';
+        var filaName = req.param('filename');
+        var path = dir + '/' + filaName;
+
+        fs.writeFile(path, new Buffer(image, 'base64'), function (error) {
+            if (error) {
+                console.log(error);
+                res.json(error)
+            } else {
+                res.ok();
+            }
+        });
+    }
 };
 
