@@ -89,7 +89,7 @@ function sendNewMessage(data) {
             var jsonBody = response.getBody();
             console.log(jsonBody);
             jsonBody.image = jsonBody.image;
-            delete jsonBody.image;
+            jsonBody.sender = jsonBody.chat.sender.id;
             delete jsonBody.chat.messages;
             io.to(jsonBody.socketId).emit('new_message', jsonBody);
         });
