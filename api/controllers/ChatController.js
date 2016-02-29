@@ -88,6 +88,7 @@ function createMessage(res, messageData, toUser) {
         } else {
             User.findOneById(toUser).exec(function (error, user) {
                 if (error) {
+                    console.log(error);
                     res.json(error)
                 } else if (user) {
                     console.log('Message created');
