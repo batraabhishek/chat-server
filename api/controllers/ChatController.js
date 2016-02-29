@@ -44,10 +44,13 @@ module.exports = {
                 isImage: isImage
             };
 
+            console.log(messageData);
+
             if (error) {
                 return res.json(error);
             } else if (chat) {
                 messageData.chat = chat;
+                console.log('Creating new message');
                 createMessage(res, messageData, toUser)
             } else {
                 var chatData = {
@@ -56,6 +59,7 @@ module.exports = {
                     messages: []
                 }
 
+                console.log('Creating new chat');
                 createChat(res, chatData, messageData, toUser)
             }
         });
@@ -69,6 +73,7 @@ function createChat(res, chatData, messageData, toUser) {
             return res.json(error);
         } else if (chat) {
             messageData.chat = chat;
+            console.log('Chat created, now creating message');
             createMessage(res, messageData, toUser);
         }
     });
@@ -83,6 +88,7 @@ function createMessage(res, messageData, toUser) {
                 if (error) {
                     res.json(error)
                 } else if (user) {
+                    console.log('Message created');
                     message.socketId = user.socketId;
                     findChatById(res, message);
                 } else {
@@ -102,6 +108,10 @@ function findChatById(res, message) {
             res.json(error)
         } else {
             message.chat = chat;
+
+            console.log('Sending response')
+            console.log(message);
+
             res.json(message);
         }
     })

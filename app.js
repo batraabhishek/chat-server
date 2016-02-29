@@ -85,7 +85,9 @@ function sendNewMessage(data) {
     var url = 'http://localhost:1337/message';
     requestify.post(url, data)
         .then(function (response) {
+            console.log('Got response');
             var jsonBody = response.getBody();
+            console.log(jsonBody);
             jsonBody.image = jsonBody.image;
             delete jsonBody.image;
             delete jsonBody.chat.messages;
