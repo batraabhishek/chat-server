@@ -11,11 +11,9 @@ module.exports = {
 
         message: {
             type: 'string',
-            required: true
         },
         image: {
             type: 'string',
-            required: true
         },
         isImage: {
             type: 'boolean',
