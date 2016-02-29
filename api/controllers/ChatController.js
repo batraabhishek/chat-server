@@ -80,6 +80,8 @@ function createChat(res, chatData, messageData, toUser) {
 }
 
 function createMessage(res, messageData, toUser) {
+    console.log('################');
+    console.log(messageData);
     Message.create(messageData).exec(function (error, message) {
         if (error) {
             res.json(error);
