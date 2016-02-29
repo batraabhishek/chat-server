@@ -17,6 +17,10 @@ module.exports = {
             type: 'string',
             required: true
         },
+        isImage: {
+            type: 'boolean',
+            required: true
+        },
         chat: {
             model: 'chat'
         }
