@@ -28,7 +28,7 @@ module.exports = {
 
         var message = req.param('message');
         var fromUser = req.param('sender');
-        var imageUrl = req.param('imageUrl');
+        var image = req.param('image');
         var toUser = req.param('toUser');
         var isImage = req.param('isImage');
 
@@ -39,7 +39,7 @@ module.exports = {
 
             var messageData = {
                 message: message,
-                image: imageUrl,
+                image: image,
                 chat: chat,
                 isImage: isImage
             };

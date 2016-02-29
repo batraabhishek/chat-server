@@ -86,7 +86,7 @@ function sendNewMessage(data) {
     requestify.post(url, data)
         .then(function (response) {
             var jsonBody = response.getBody();
-            jsonBody.imageUrl = jsonBody.image;
+            jsonBody.image = jsonBody.image;
             delete jsonBody.image;
             delete jsonBody.chat.messages;
             io.to(jsonBody.socketId).emit('new_message', jsonBody);
