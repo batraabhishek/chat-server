@@ -14,7 +14,7 @@ module.exports = {
 
         var body = {
             username:username,
-            numer:number
+            number:number
         };
 
         User.findOrCreate({number: number}, body, function(error, user) {
