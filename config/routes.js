@@ -43,7 +43,8 @@ module.exports.routes = {
     'get /users': 'MainController.getUsers',
     'get /messages': 'ChatController.getPendingMessages',
     'get /delete' : 'MessageController.deleteMessages',
-    'post /uploadImage' : 'MainController.uploadImage'
+    'post /uploadImage' : 'MainController.uploadImage',
+    'post /createUser' : 'UserController.createOrUpdate'
 
     /***************************************************************************
      *                                                                          *

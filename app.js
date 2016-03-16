@@ -13,6 +13,7 @@ var request = require("request");
 // Ensure a "sails" can be located:
 (function () {
     var sails;
+
     try {
         sails = require('sails');
     } catch (e) {
